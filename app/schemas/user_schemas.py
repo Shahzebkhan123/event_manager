@@ -31,8 +31,12 @@ class UserBase(BaseModel):
     profile_picture_url: Optional[str] = Field(None, example="https://example.com/profiles/john.jpg")
     linkedin_profile_url: Optional[str] = Field(None, example="https://linkedin.com/in/johndoe")
     github_profile_url: Optional[str] = Field(None, example="https://github.com/johndoe")
+    website: Optional[str] = Field(None, example="https://myportfolio.dev")
 
-    _validate_urls = validator('profile_picture_url', 'linkedin_profile_url', 'github_profile_url', pre=True, allow_reuse=True)(validate_url)
+    _validate_urls = validator(
+        'profile_picture_url', 'linkedin_profile_url', 'github_profile_url', 'website',
+        pre=True, allow_reuse=True
+    )(validate_url)
 
     class Config:
         from_attributes = True
@@ -40,6 +44,10 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     email: EmailStr = Field(..., example="john.doe@example.com")
     password: str = Field(..., example="Secure*1234")
+    is_professional: Optional[bool] = Field(default=False, example=True)
+    experience: Optional[str] = Field(None, example="5 years in full-stack development")
+    certifications: Optional[List[str]] = Field(None, example=["AWS Certified Developer", "Scrum Master"])
+    website: Optional[str] = Field(None, example="https://myportfolio.dev")
 
     @validator('password')
     def validate_password(cls, v):
@@ -64,6 +72,10 @@ class UserUpdate(UserBase):
     profile_picture_url: Optional[str] = Field(None, example="https://example.com/profiles/john.jpg")
     linkedin_profile_url: Optional[str] = Field(None, example="https://linkedin.com/in/johndoe")
     github_profile_url: Optional[str] = Field(None, example="https://github.com/johndoe")
+    is_professional: Optional[bool] = Field(default=False, example=True)
+    experience: Optional[str] = Field(None, example="5 years in full-stack development")
+    certifications: Optional[List[str]] = Field(None, example=["AWS Certified Developer", "Scrum Master"])
+    website: Optional[str] = Field(None, example="https://myportfolio.dev")
 
     @root_validator(pre=True)
     def check_at_least_one_value(cls, values):
@@ -93,6 +105,7 @@ class UserListResponse(BaseModel):
         "profile_picture_url": "https://example.com/profiles/john.jpg",
         "linkedin_profile_url": "https://linkedin.com/in/johndoe",
         "github_profile_url": "https://github.com/johndoe",
+        "website": "https://myportfolio.dev",
         "is_professional": True
     }])
     total: int = Field(..., example=100)
