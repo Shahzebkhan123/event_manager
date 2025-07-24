@@ -4,8 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 import uuid
-import re
-
+import re 
 from app.utils.nickname_gen import generate_nickname
 
 class UserRole(str, Enum):
