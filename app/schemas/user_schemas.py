@@ -41,6 +41,12 @@ class UserCreate(UserBase):
     email: EmailStr = Field(..., example="john.doe@example.com")
     password: str = Field(..., example="Secure*1234")
 
+    @root_validator(pre=True)
+    def set_default_role(cls, values):
+        values['role'] = UserRole.AUTHENTICATED
+        return values
+
+
     @validator('password')
     def validate_password(cls, v):
         if len(v) < 8:
