@@ -6,6 +6,7 @@ from enum import Enum
 import uuid
 import re
 
+
 from app.utils.nickname_gen import generate_nickname
 
 class UserRole(str, Enum):
@@ -95,6 +96,7 @@ class UserListResponse(BaseModel):
         "github_profile_url": "https://github.com/johndoe",
         "is_professional": True
     }])
+
     total: int = Field(..., example=100)
     page: int = Field(..., example=1)
     size: int = Field(..., example=10)
